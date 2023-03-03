@@ -24,8 +24,8 @@ func handleResponse(response *resty.Response, err error) error {
 	return nil
 }
 
-func (client *Client) GetPokemonInformation(ctx context.Context, pokemonName string) (*Pokemon, error) {
-	var result *Pokemon
+func (client *Client) GetPokemonInformation(ctx context.Context, pokemonName string) (any, error) {
+	var result pokemon
 
 	getPokemonPath := pokemonPath + pokemonName
 

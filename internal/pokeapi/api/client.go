@@ -22,7 +22,7 @@ func CreateClient(configuration Configuration, resty *resty.Client, logger *logr
 			}),
 	}
 
-	client.logger = logrus.NewEntry(logrus.StandardLogger())
+	client.logger = logger
 	client.resty = client.resty.SetLogger(client.logger)
 
 	return client

@@ -1,0 +1,4 @@
+logging:
+  format: prettyjson
+  verbose: true
+  omitMetadata: true
