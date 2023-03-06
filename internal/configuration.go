@@ -8,6 +8,7 @@ import (
 type Configuration struct {
 	PokeAPI api.Configuration     `mapstructure:"pokeAPI"`
 	Logging helpers.Configuration `mapstructure:"logging"`
+	Pokemon string                `mapstructure:"pokemon"`
 }
 
 // nolint: gochecknoglobals

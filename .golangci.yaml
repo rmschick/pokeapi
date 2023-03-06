@@ -1,0 +1,54 @@
+run:
+  tests: false
+  skip-dirs:
+    - vendor$
+  modules-download-mode: vendor
+
+linters-settings:
+  dupl:
+    threshold: 100
+  funlen:
+    lines: 80
+    statements: 60
+  gci:
+    sections:
+      - standard # Captures all standard packages if they do not match another section.
+      - default # Contains all imports that could not be matched to another section type.
+      - prefix(github.com/rmschick99/pokeapi)
+  gocritic:
+    disabled-checks:
+      - sloppyLen
+  gocyclo:
+    min-complexity: 10
+  goimports:
+    local-prefixes: github.com/rmschick99/pokeapi
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+  lll:
+    line-length: 120
+    tab-width: 2
+  misspell:
+    locale: US
+
+linters:
+  enable-all: true
+  disable:
+    - goerr113
+    - lll
+    - typecheck
+    - wrapcheck
+    - nolintlint
+    - exhaustruct # DO NOT ENABLE, SHOULD BE USED SPARINGLY
+    - exhaustivestruct # DO NOT ENABLE, SHOULD BE USED SPARINGLY
+    - golint # IS DEPRECATED
+    - interfacer # IS DEPRECATED
+    - maligned # IS DEPRECATED
+    - scopelint # IS DEPRECATED
+    - ifshort # IS DEPRECATED
+    - structcheck # IS DEPRECATED
+    - deadcode # IS DEPRECATED
+    - nosnakecase # IS DEPRECATED
+    - varcheck # IS DEPRECATED
+  fast: false

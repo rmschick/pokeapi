@@ -39,6 +39,6 @@ func (client *Client) GetPokemonInformation(ctx context.Context, pokemonName str
 	if err = handleResponse(response, err); err != nil {
 		return nil, errors.Wrap(err, "Failed to get pokemon information")
 	}
-
+	
 	return result, nil
 }

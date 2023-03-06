@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-
 	"github.com/go-resty/resty/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -24,7 +23,7 @@ func main() {
 
 	pokeClient := api.CreateClient(config.PokeAPI, resty.New(), logger)
 
-	response, err := pokeClient.GetPokemonInformation(ctx, "pikachu")
+	response, err := pokeClient.GetPokemonInformation(ctx, config.Pokemon)
 	if err != nil {
 		logger.WithError(err).Fatal("failed client request")
 	}
