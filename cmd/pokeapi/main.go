@@ -2,8 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"github.com/go-resty/resty/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -11,6 +9,7 @@ import (
 	"github.com/rmschick/pokeapi/internal"
 	"github.com/rmschick/pokeapi/internal/helpers"
 	"github.com/rmschick/pokeapi/internal/pokeapi/api"
+	"github.com/rmschick/pokeapi/internal/pokeapi/retriever"
 )
 
 func main() {
@@ -23,15 +22,9 @@ func main() {
 
 	pokeClient := api.CreateClient(config.PokeAPI, resty.New(), logger)
 
-	response, err := pokeClient.GetPokemonInformation(ctx, config.Pokemon)
-	if err != nil {
-		logger.WithError(err).Fatal("failed client request")
-	}
+	r := retriever.CreateRetriever(pokeClient, config.Search.Pokemon)
 
-	s, err := json.MarshalIndent(response, "", "\t")
-	if err != nil {
-		logger.WithError(err).Fatal("failed to marshal response")
+	if err := r.Retrieve(ctx); err != nil {
+		logger.WithError(err).Fatal("failed to retrieve pokemon information")
 	}
-
-	fmt.Printf("%s", string(s))
 }
