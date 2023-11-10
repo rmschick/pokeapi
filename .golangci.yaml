@@ -14,14 +14,14 @@ linters-settings:
     sections:
       - standard # Captures all standard packages if they do not match another section.
       - default # Contains all imports that could not be matched to another section type.
-      - prefix(github.com/rmschick99/pokeapi)
+      - prefix(github.com/rmschick/pokeapi)
   gocritic:
     disabled-checks:
       - sloppyLen
   gocyclo:
     min-complexity: 10
   goimports:
-    local-prefixes: github.com/rmschick99/pokeapi
+    local-prefixes: github.com/rmschick/pokeapi
   govet:
     enable-all: true
     disable:
@@ -40,6 +40,7 @@ linters:
     - typecheck
     - wrapcheck
     - nolintlint
+    - tagliatelle
     - exhaustruct # DO NOT ENABLE, SHOULD BE USED SPARINGLY
     - exhaustivestruct # DO NOT ENABLE, SHOULD BE USED SPARINGLY
     - golint # IS DEPRECATED

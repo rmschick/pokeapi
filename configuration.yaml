@@ -2,5 +2,8 @@ logging:
   format: prettyjson
   verbose: true
   omitMetadata: true
-pokemon:
-  pikachu
+search:
+  pokemon:
+    - pikachu
+    - charmander
+    - raquaza
