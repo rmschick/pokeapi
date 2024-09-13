@@ -17,9 +17,7 @@ func CreateClient(configuration Configuration, resty *resty.Client, logger *logr
 		resty: resty.
 			SetBaseURL(configuration.URL.String()).
 			SetTimeout(configuration.Timeout).
-			SetHeaders(map[string]string{
-				"Accept": "application/json",
-			}),
+			SetHeader("Content-Type", "application/json"),
 	}
 
 	client.logger = logger

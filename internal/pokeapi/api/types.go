@@ -245,14 +245,14 @@ type Pokemon struct {
 		URL  string `json:"url"`
 	} `json:"species"`
 	Sprites struct {
-		BackDefault      string      `json:"back_default"`
-		BackFemale       interface{} `json:"back_female"`
-		BackShiny        string      `json:"back_shiny"`
-		BackShinyFemale  interface{} `json:"back_shiny_female"`
-		FrontDefault     string      `json:"front_default"`
-		FrontFemale      interface{} `json:"front_female"`
-		FrontShiny       string      `json:"front_shiny"`
-		FrontShinyFemale interface{} `json:"front_shiny_female"`
+		BackDefault      string `json:"back_default"`
+		BackFemale       string `json:"back_female"`
+		BackShiny        string `json:"back_shiny"`
+		BackShinyFemale  string `json:"back_shiny_female"`
+		FrontDefault     string `json:"front_default"`
+		FrontFemale      string `json:"front_female"`
+		FrontShiny       string `json:"front_shiny"`
+		FrontShinyFemale string `json:"front_shiny_female"`
 	} `json:"sprites"`
 	Stats []struct {
 		BaseStat int `json:"base_stat"`

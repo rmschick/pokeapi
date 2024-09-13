@@ -2,6 +2,10 @@ package main
 
 import (
 	"context"
+	"html/template"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -9,7 +13,6 @@ import (
 	"github.com/rmschick/pokeapi/internal"
 	"github.com/rmschick/pokeapi/internal/helpers"
 	"github.com/rmschick/pokeapi/internal/pokeapi/api"
-	"github.com/rmschick/pokeapi/internal/pokeapi/retriever"
 )
 
 func main() {
@@ -22,9 +25,28 @@ func main() {
 
 	pokeClient := api.CreateClient(config.PokeAPI, resty.New(), logger)
 
-	r := retriever.CreateRetriever(pokeClient, config.Search.Pokemon)
+	router := gin.Default()
 
-	if err := r.Retrieve(ctx); err != nil {
-		logger.WithError(err).Fatal("failed to retrieve pokemon information")
+	router.SetFuncMap(template.FuncMap{
+		"toUpper": helpers.TitleCase,
+	})
+	router.LoadHTMLGlob("templates/*")
+
+	router.GET("/pokemon/:name", func(c *gin.Context) {
+		pokemonName := c.Param("name")
+		pokemonInfo, err := pokeClient.GetPokemonInformation(ctx, pokemonName)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve pokemon information"})
+
+			return
+		}
+
+		// Serve the Pokémon info to the HTML template
+		c.HTML(http.StatusOK, "pokemon.html", pokemonInfo)
+	})
+
+	err := router.Run(":8080")
+	if err != nil {
+		panic(err)
 	}
 }

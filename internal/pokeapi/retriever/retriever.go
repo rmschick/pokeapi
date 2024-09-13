@@ -22,7 +22,7 @@ func CreateRetriever(client *api.Client, retrieve []string) *Retriever {
 
 // Retrieve retrieves all information for the given resources from PokeAPI
 func (r *Retriever) Retrieve(ctx context.Context) error {
-	allInformation := make(map[string]interface{})
+	allInformation := make(map[string]any)
 
 	for _, resource := range r.retrieve {
 		information, err := r.client.GetPokemonInformation(ctx, resource)

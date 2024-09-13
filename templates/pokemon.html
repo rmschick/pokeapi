@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <title>{{ toUpper .Name }}</title>
+</head>
+<body>
+<h1>{{ toUpper .Name }}</h1>
+<p>Pokédex Order: {{ .Order }}</p>
+<p>Height: {{ .Height }}</p>
+<p>Weight: {{ .Weight }}</p>
+<p>Base Experience: {{ .BaseExperience }}</p>
+<p>Location Area Encounters: {{ .LocationAreaEncounters }}</p>
+<p>Species: <a href="{{ .Species.URL }}">{{ .Species.Name }}</a> </p>
+
+<h2>Abilities</h2>
+<ul>
+    {{ range .Abilities }}
+    <li>
+        <strong>Ability Name:</strong> {{ .Ability.Name }}<br/>
+        <strong>Is Hidden:</strong> {{ .IsHidden }}<br/>
+        <strong>Slot:</strong> {{ .Slot }}
+    </li>
+    {{ else }}
+    <li>No Abilities Found</li>
+    {{ end }}
+</ul>
+
+<h2>Forms</h2>
+<ul>
+    {{ range .Forms }}
+    <li>
+        <strong>Name:</strong> {{ .Name }}<br/>
+        <strong>URL:</strong> <a href="{{ .URL }}">{{ .URL }}</a><br/>
+    </li>
+    {{ else }}
+    <li>No Forms Found</li>
+    {{ end }}
+</ul>
+
+<h2>Game Indices</h2>
+<ul>
+    {{ range .GameIndices }}
+    <li>
+        <strong>Game Index:</strong> {{ .GameIndex }}<br/>
+        <strong>Version Name:</strong> {{ .Version.Name }}<br/>
+        <strong>Version URL:</strong> <a href="{{ .Version.URL }}">{{ .Version.URL }}</a><br/>
+    </li>
+    {{ else }}
+    <li>No Game Indices Found</li>
+    {{ end }}
+</ul>
+
+<h2>Moves</h2>
+<ul>
+    {{ range .Moves }}
+    <li>
+        <strong>Name:</strong>  <a href="{{ .Move.URL }}">{{ .Move.Name }}</a> <br/>
+        {{ range .VersionGroupDetails }}
+            <strong>Level Learned At:</strong> {{ .LevelLearnedAt }}<br/>
+            <strong>Move Learn Method:</strong> <a href="{{ .MoveLearnMethod.URL }}">{{ .MoveLearnMethod.Name }}</a><br/>
+            <strong>Version Group Name:</strong> {{ .VersionGroup.Name }}<br/>
+            <br>
+        {{ end }}
+    </li>
+    {{ else }}
+    <li>No Moves Found</li>
+    {{ end }}
+</ul>
+
+<h2>Sprites</h2>
+<ul>
+    {{ with .Sprites }}
+    <li>
+        <strong>Front:</strong>
+        <ul>
+            <li>
+                <strong>Male:</strong>
+                <a href="{{ .FrontDefault }}"><img src="{{ .FrontDefault }}" alt="Male Front Sprite"></a><br/>
+                <strong>Female:</strong>
+                <a href="{{ .FrontFemale }}"><img src="{{ .FrontFemale }}" alt="Female Front Sprite"></a><br/>
+            </li>
+        </ul>
+        <strong>Back:</strong>
+        <ul>
+            <li>
+                <strong>Male:</strong>
+                <a href="{{ .BackDefault }}"><img src="{{ .BackDefault }}" alt="Male Back Sprite"></a><br/>
+                <strong>Female:</strong>
+                <a href="{{ .BackFemale }}"><img src="{{ .BackFemale }}" alt="Female Back Sprite"></a><br/>
+            </li>
+        </ul>
+        <strong>Shiny:</strong>
+        <ul>
+            <li>
+                <strong>Front:</strong>
+                <a href="{{ .FrontShiny }}"><img src="{{ .FrontShiny }}" alt="Shiny Front Sprite"></a><br/>
+                <strong>Back:</strong>
+                <a href="{{ .BackShiny }}"><img src="{{ .BackShiny }}" alt="Shiny Back Sprite"></a><br/>
+            </li>
+        </ul>
+    </li>
+    {{ else }}
+    <li>No Sprites Found</li>
+    {{ end }}
+</ul>
+
+</body>
+</html>

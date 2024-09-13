@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	pokemonPath = "/pokemon/"
+	pokemonPath = "/pokemon/{name}"
 )
 
 func handleResponse(response *resty.Response, err error) error {
@@ -24,21 +24,21 @@ func handleResponse(response *resty.Response, err error) error {
 	return nil
 }
 
-func (client *Client) GetPokemonInformation(ctx context.Context, pokemonName string) (any, error) {
+func (client *Client) GetPokemonInformation(ctx context.Context, pokemonName string) (*Pokemon, error) {
 	var result Pokemon
-
-	getPokemonPath := pokemonPath + pokemonName
 
 	response, err := client.resty.R().
 		EnableTrace().
-		SetHeader("Content-Type", "application/json").
+		SetPathParams(map[string]string{
+			"name": pokemonName,
+		}).
 		SetContext(ctx).
 		SetResult(&result).
-		Get(getPokemonPath)
+		Get(pokemonPath)
 
 	if err = handleResponse(response, err); err != nil {
 		return nil, errors.Wrap(err, "Failed to get pokemon information")
 	}
 
-	return result, nil
+	return &result, nil
 }
