@@ -1,0 +1,58 @@
+import type { Pokemon } from '../types/index';
+
+export const dummyPokemon: Pokemon[] = [
+  {
+    id: 1,
+    name: 'Pikachu',
+    type: ['Electric'],
+    image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
+    height: 4,
+    weight: 60,
+    generations: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  },
+  {
+    id: 2,
+    name: 'Charizard',
+    type: ['Fire', 'Flying'],
+    image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png',
+    height: 17,
+    weight: 905,
+    generations: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  },
+  {
+    id: 3,
+    name: 'Blastoise',
+    type: ['Water'],
+    image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png',
+    height: 16,
+    weight: 855,
+    generations: [1, 2, 3, 4, 5, 6, 8, 9],
+  },
+  {
+    id: 4,
+    name: 'Venusaur',
+    type: ['Grass', 'Poison'],
+    image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png',
+    height: 20,
+    weight: 1000,
+    generations: [1, 2, 3, 4, 5, 6, 7, 8],
+  },
+  {
+    id: 5,
+    name: 'Dragonite',
+    type: ['Dragon', 'Flying'],
+    image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/149.png',
+    height: 22,
+    weight: 2100,
+    generations: [1, 2, 3, 4, 6, 7, 8, 9],
+  },
+  {
+    id: 6,
+    name: 'Gyarados',
+    type: ['Water', 'Flying'],
+    image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png',
+    height: 65,
+    weight: 23500,
+    generations: [1, 2, 4, 5, 6, 7, 8, 9],
+  },
+];
