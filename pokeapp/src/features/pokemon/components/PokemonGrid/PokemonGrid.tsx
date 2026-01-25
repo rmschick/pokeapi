@@ -16,6 +16,7 @@ export const PokemonGrid = ({ pokemon }: PokemonGridProps) => {
               id={p.id}
               name={p.name}
               image={p.image}
+              href={`/pokemon/${p.name.toLowerCase()}`}
               types={p.type}
               typeColors={typeColors}
               stats={{

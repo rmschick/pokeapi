@@ -11,45 +11,50 @@ This project uses a **feature-based modular architecture** to ensure scalability
 ```
 src/
 ├── components/
-│   ├── AppBar.tsx          # Shared navigation component (used across all features)
-│   ├── ItemCard.tsx        # Reusable data card component (agnostic to data type)
-│   └── PokeapiIcon.tsx     # Logo component
+│   ├── AppBar.tsx              # Shared navigation component
+│   ├── ItemCard.tsx            # Reusable data card component
+│   ├── PageHeader.tsx          # Reusable page header
+│   ├── GenericFilter.tsx       # Reusable configurable filter
+│   └── PokeapiIcon.tsx         # Logo component
 │
 ├── features/
-│   ├── pokemon/            # Pokemon feature module
-│   │   ├── index.ts        # Feature exports (barrel export)
+│   ├── pokemon/                # Pokemon feature module
+│   │   ├── index.ts            # Feature exports (barrel export)
 │   │   ├── pages/
-│   │   │   └── PokemonPage.tsx           # Page orchestrator - imports and arranges components
+│   │   │   ├── PokemonPage.tsx              # Pokemon listing page
+│   │   │   └── PokemonDetailPage.tsx       # Pokemon detail page (NEW)
 │   │   ├── components/
-│   │   │   ├── PageHeader/               # Reusable header for pokemon pages
+│   │   │   ├── PokemonGrid/                # Grid display component
 │   │   │   │   ├── index.ts
-│   │   │   │   └── PageHeader.tsx
-│   │   │   ├── PokemonFilter/            # Filter UI component
-│   │   │   │   ├── index.ts
-│   │   │   │   └── PokemonFilter.tsx
-│   │   │   └── PokemonGrid/              # Grid display component
-│   │   │       ├── index.ts
-│   │   │       └── PokemonGrid.tsx
+│   │   │   │   └── PokemonGrid.tsx
+│   │   │   ├── PokemonDetails/             # Detail page sub-components (NEW)
+│   │   │   │   ├── PokemonHero.tsx         # Header/hero section
+│   │   │   │   ├── PokemonStats.tsx        # Stats section
+│   │   │   │   ├── PokemonMoves.tsx        # Moves section
+│   │   │   │   ├── PokemonAbilities.tsx    # Abilities section
+│   │   │   │   └── PokemonEvolutions.tsx   # Evolutions section
+│   │   │   └── EmptyState.tsx              # 404/not found component
 │   │   ├── hooks/
-│   │   │   └── useFilteredPokemon.ts    # Custom hook for filtering logic
+│   │   │   ├── useFilteredPokemon.ts       # Custom hook for filtering
+│   │   │   └── usePokemonByName.ts         # Custom hook for lookup (NEW)
 │   │   ├── data/
-│   │   │   └── dummyPokemon.ts          # Dummy/static data
+│   │   │   └── dummyPokemon.ts             # Dummy/static data (expanded)
 │   │   ├── types/
-│   │   │   ├── index.ts                 # Pokemon interface & exports
-│   │   │   └── typeColors.ts            # Type color mappings
-│   │   └── api/                         # API integration (future)
+│   │   │   ├── index.ts                    # Pokemon interface & exports
+│   │   │   └── typeColors.ts               # Type color mappings
+│   │   └── api/                            # API integration (future)
 │   │
-│   ├── berries/            # Berries feature (follow same pattern)
-│   ├── generations/        # Generations feature (follow same pattern)
-│   └── [other features]/   # Additional features follow same structure
+│   ├── berries/                # Berries feature (follow same pattern)
+│   ├── items/                  # Items feature (follow same pattern)
+│   └── [other features]/       # Additional features follow same structure
 │
 ├── pages/
-│   └── HomePage.tsx        # Landing/home page
+│   └── HomePage.tsx            # Landing/home page
 │
-├── App.tsx                 # Main app with routing
-├── App.css                 # Global styles
-├── main.tsx                # React entry point
-└── index.css               # Global CSS
+├── App.tsx                     # Main app with routing
+├── App.css                     # Global styles
+├── main.tsx                    # React entry point
+└── index.css                   # Global CSS
 
 ```
 
@@ -68,6 +73,21 @@ export { typeColors } from './types/typeColors';
 
 **`features/pokemon/types/index.ts`** - Type definitions
 ```typescript
+export interface PokemonStats {
+  hp: number;
+  attack: number;
+  defense: number;
+  spAtk: number;
+  spDef: number;
+  speed: number;
+}
+
+export interface Move {
+  name: string;
+  level: number;
+  type: string;
+}
+
 export interface Pokemon {
   id: number;
   name: string;
@@ -75,6 +95,13 @@ export interface Pokemon {
   image: string;
   height: number;
   weight: number;
+  generations: number[];
+  // Detail page fields
+  description: string;
+  stats: PokemonStats;
+  moves: Move[];
+  abilities: string[];
+  evolutions?: string[];
 }
 ```
 
@@ -153,10 +180,19 @@ A data-agnostic card component used across all features:
        <PageHeader ... />
        <BerryFilter ... />
        <BerryGrid ... />
-     );
-   };
-   ```
+### List Pages (Static Routes)
+- `/` - HomePage (landing page)
+- `/pokemon` - Pokemon listing and browsing with filters
+- `/berries` - Berries listing and browsing with filters
+- `/items` - Items listing and browsing with filters
 
+### Detail Pages (Dynamic Routes)
+- `/pokemon/:name` - Pokemon detail page (e.g., `/pokemon/pikachu`)
+  - Displays: stats, moves, abilities, evolutions, generations
+- `/berries/:name` - Berry detail page (e.g., `/berries/cheri-berry`)
+  - Displays: flavors, size, growth time, generations
+- `/items/:name` - Item detail page (e.g., `/items/masterball`)
+  - Displays: description, effect, generations
 7. **Create barrel export** in `src/features/berries/index.ts`
 
 8. **Add route** in `src/App.tsx`:
@@ -170,6 +206,30 @@ A data-agnostic card component used across all features:
 - Flexible stats system (accepts any key-value pairs)
 - Optional type badges for typed items
 - Responsive hover effects and animations
+
+## Detail Page Architecture
+
+### Chunk 1: Routing & Navigation
+- Create PokemonDetailPage skeleton
+- Add dynamic route in App.tsx
+- Make ItemCard clickable (wrap in Link)
+
+### Chunk 2: Data Lookup
+- Create usePokemonByName hook
+- Handle not found/error cases
+
+### Chunk 3: Detail Layout
+- Build detail page layout (hero + sections)
+- Create detail sub-components (Hero, Stats, Moves, Abilities, Evolutions)
+
+### Chunk 4: Expand Dummy Data
+- Add stats, moves, abilities, evolutions to each Pokemon
+- Create lookup data structures
+
+### Chunk 5: Styling & Polish
+- Responsive design
+- Loading/error states
+- Animations
 
 ## Routing
 
@@ -195,11 +255,13 @@ To add a new feature (e.g., Berries):
 
 4. **Create the feature page** in `src/features/berries/pages/BerriesPage.tsx`
 
-5. **Create barrel export** in `src/features/berries/index.ts`
-
-6. **Add route** in `src/App.tsx`:
-   ```typescript
-   <Route path="/berries" element={<BerriesPage />} />
+5. **Create barr functionality
+- [x] Implement detail pages for items
+- [ ] Add caching/state management (Redux, Zustand)
+- [ ] Unit and integration tests
+- [ ] Dark mode support
+- [ ] Favorites/bookmarking feature
+- [ ] Type effectiveness chartss" element={<BerriesPage />} />
    ```
 
 7. **Update navigation** in `src/components/AppBar.tsx` pages array

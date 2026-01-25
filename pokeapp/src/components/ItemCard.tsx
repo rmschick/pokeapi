@@ -1,9 +1,11 @@
 import { Card, CardContent, CardMedia, Typography, Box, Chip } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface ItemCardProps {
   id: number;
   name: string;
   image: string;
+  href?: string; // Optional link for detail pages
   types?: string[];
   typeColors?: Record<string, string>;
   stats?: Record<string, string | number>;
@@ -12,21 +14,22 @@ interface ItemCardProps {
 export const ItemCard = ({
   name,
   image,
+  href,
   types,
   typeColors = {},
   stats,
 }: ItemCardProps) => {
-  return (
+  const cardComponent = (
     <Card
       sx={{
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
         transition: 'all 0.3s ease',
-        cursor: 'pointer',
+        cursor: href ? 'pointer' : 'default',
         '&:hover': {
-          transform: 'translateY(-8px)',
-          boxShadow: 4,
+          transform: href ? 'translateY(-8px)' : 'none',
+          boxShadow: href ? 4 : 1,
         },
       }}
     >
@@ -84,4 +87,15 @@ export const ItemCard = ({
       </CardContent>
     </Card>
   );
+
+  // Wrap in Link if href is provided, otherwise just render the card
+  if (href) {
+    return (
+      <RouterLink to={href} style={{ textDecoration: 'none', height: '100%' }}>
+        {cardComponent}
+      </RouterLink>
+    );
+  }
+
+  return cardComponent;
 };

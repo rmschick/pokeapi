@@ -13,7 +13,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { PokeapiIcon } from './PokeapiIcon';
 
 const pages = [
-  { label: 'Pokemon', path: '/pokemon' },
+  { label: 'Pokémon', path: '/pokemon' },
   { label: 'Berries', path: '/berries' },
   { label: 'Items', path: '/items' },
 ];
@@ -40,16 +40,16 @@ function ResponsiveAppBar() {
       }}
     >
       <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+        <Toolbar disableGutters sx={{ justifyContent: 'space-between', minHeight: { xs: 56, sm: 64 } }}>
           {/* Logo - visible on all screens */}
-          <Box sx={{ display: 'flex', alignItems: 'center', mr: 4 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', mr: { xs: 2, sm: 5 }, flexShrink: 0 }}>
             <RouterLink to="/" style={{ display: 'flex', textDecoration: 'none' }}>
               <PokeapiIcon />
             </RouterLink>
           </Box>
 
           {/* Desktop Navigation */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, flex: 1 }}>
+          <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 1, flex: 1 }}>
             {pages.map((page) => (
               <Button
                 key={page.path}
@@ -70,14 +70,20 @@ function ResponsiveAppBar() {
           </Box>
 
           {/* Mobile Menu */}
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ display: { xs: 'flex', sm: 'none' }, ml: 'auto' }}>
             <IconButton
-              size="large"
+              size="medium"
               aria-label="menu"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
+              sx={{
+                color: 'text.primary',
+                '&:hover': {
+                  backgroundColor: 'action.hover',
+                }
+              }}
             >
               <MenuIcon />
             </IconButton>
@@ -102,8 +108,9 @@ function ResponsiveAppBar() {
                   component={RouterLink}
                   to={page.path}
                   onClick={handleCloseNavMenu}
+                  sx={{ minWidth: 200 }}
                 >
-                  <Typography sx={{ textAlign: 'center' }}>{page.label}</Typography>
+                  {page.label}
                 </MenuItem>
               ))}
             </Menu>
